@@ -22,3 +22,15 @@ f{
 .container{
     margin-top: 15px;
 }
+
+.tooltip{
+    position: absolute;			
+    text-align: center;			
+    width: 100px;					
+    height: 70px;					
+    padding: 2px;				
+    background: rgb(174, 195, 223);	
+    border: 0px;		
+    border-radius: 3px;			
+    display:none;
+}

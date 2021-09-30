@@ -61,6 +61,14 @@ async function main(){
 
     const color = d3.scaleOrdinal(d3.schemeTableau10).domain(regionArr);
 
+    let popArr = [];
+    ori_data.forEach(a => popArr.push(a.Population));
+    popArr.sort((a, b) => b - a);
+    console.log(popArr);
+
+    //let tooltip = d3.select(".tooltip").append("div").attr("class", "tooltip")
+
+    //tooltip not showing up
     svg.selectAll("scatter-plot")
         .data(ori_data)
         .enter()
@@ -68,12 +76,35 @@ async function main(){
         .attr('cx', d => xScale(d.Income))
         .attr('cy', d => yScale(d.LifeExpectancy))
         .attr('r', function(d){
-            return 10;
+            if (d.Population >= 1000000000) return 45;
+            else if (d.Population >= 100000000) return 22;
+            else if (d.Population >= 10000000) return 13;
+            else if (d.population >= 1000000) return 11;
+            else if (d.population >= 100000) return 19;
+            else return 7;
         })
         .attr('fill', "rgb(76, 162, 219)")
-        .attr('opacity', "0.7")
+        .attr('opacity', "0.65")
         .attr('stroke', "black")
-        .attr("fill", function(d){return color(d.Region)});
+        .attr("fill", function(d){return color(d.Region)})
+        .on("mouseenter", (event, d) =>{
+            const pos = d3.pointer(event, window);
+            d3.select(event.target).attr("opacity", "1");
+            d3.select(".tooltip")
+                .append("div")
+                .attr("class", "tooltip")
+                .style("display", "block")
+                .style("left", pos[0])
+                .style("top", pos[1])
+                .html(
+                    "bguvuvuvuhvl"
+                )
+        })
+        .on("mouseleave", (event, d) =>{
+            d3.select(event.target).attr("opacity", "0.65");
+            d3.select(".tooltip")
+                .style("display", "none")
+        });
     
     svg.append("text")
         .attr('x', 635)
