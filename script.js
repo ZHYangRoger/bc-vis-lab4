@@ -66,9 +66,8 @@ async function main(){
     popArr.sort((a, b) => b - a);
     console.log(popArr);
 
-    //let tooltip = d3.select(".tooltip").append("div").attr("class", "tooltip")
+    const comma = d3.format(",");
 
-    //tooltip not showing up
     svg.selectAll("scatter-plot")
         .data(ori_data)
         .enter()
@@ -91,19 +90,22 @@ async function main(){
             const pos = d3.pointer(event, window);
             d3.select(event.target).attr("opacity", "1");
             d3.select(".tooltip")
-                .append("div")
                 .attr("class", "tooltip")
                 .style("display", "block")
-                .style("left", pos[0])
-                .style("top", pos[1])
+                .style("left", pos[0] - 140 + 'px')
+                .style("top", pos[1] - 30 + 'px')
                 .html(
-                    "bguvuvuvuhvl"
-                )
+                    "Country: " + d.Country + "<br>" +
+                    "Region: " + d.Region + "<br>" +
+                    "Population: " + comma(d.Population) + "<br>" +
+                    "Income: " + comma(d.Income) + "<br>" +
+                    "Life Expectancy: " + d.LifeExpectancy + "<br>"
+                );
         })
         .on("mouseleave", (event, d) =>{
             d3.select(event.target).attr("opacity", "0.65");
             d3.select(".tooltip")
-                .style("display", "none")
+                .style("display", "none");
         });
     
     svg.append("text")
